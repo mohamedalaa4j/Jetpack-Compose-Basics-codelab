@@ -1,6 +1,8 @@
 package com.example.jetpackcomposebasicscodelab
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -13,12 +15,17 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposebasicscodelab.ui.theme.JetpackComposeBasicsCodelabTheme
+import com.example.jetpackcomposebasicscodelab.ui.theme.OnBoardingScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,13 +39,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(
-    names: List<String> = listOf("World", "Compose")
-) {
-    Column() {
-        for (i in names) {
-            Greeting(i)
+fun MyApp() {
+    var shouldShowOnBoarding by remember {
+        mutableStateOf(true)
+    }
+    if (shouldShowOnBoarding) {
+        OnBoardingScreen{
+            shouldShowOnBoarding = false
         }
+    } else {
+        greetings()
     }
 }
 
@@ -60,14 +70,27 @@ fun Greeting(name: String) {
                 Text(text = "$name!")
             }
 
-            OutlinedButton(onClick = { },
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.white)
+            OutlinedButton(
+                onClick = { },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.white)
                 )
             ) {
                 Text(text = "Show more", color = colorResource(id = R.color.purple_200))
             }
         }
 
+    }
+}
+
+@Composable
+fun greetings(
+    names: List<String> = listOf("World", "Compose")
+) {
+    Column() {
+        for (i in names) {
+            Greeting(i)
+        }
     }
 }
 
