@@ -1,14 +1,14 @@
 package com.example.jetpackcomposebasicscodelab
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -44,7 +44,7 @@ fun MyApp() {
         mutableStateOf(true)
     }
     if (shouldShowOnBoarding) {
-        OnBoardingScreen{
+        OnBoardingScreen {
             shouldShowOnBoarding = false
         }
     } else {
@@ -67,7 +67,7 @@ fun Greeting(name: String) {
             Column(modifier = Modifier.weight(1f)) {
 
                 Text(text = "Hello")
-                Text(text = "$name!")
+                Text(text = "$name")
             }
 
             OutlinedButton(
@@ -85,11 +85,17 @@ fun Greeting(name: String) {
 
 @Composable
 fun greetings(
-    names: List<String> = listOf("World", "Compose")
+    names: List<String> = List(100) { "$it" }
 ) {
-    Column() {
-        for (i in names) {
-            Greeting(i)
+//    Column() {
+//        for (i in names) {
+//            Greeting(i)
+//        }
+//    }
+
+    LazyColumn (Modifier.padding(vertical = 4.dp)){
+        items(items = names){name ->
+            Greeting(name = name)
         }
     }
 }
